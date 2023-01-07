@@ -1,2 +1,3 @@
-# quest-irl-backend
-플래너 백엔드
+# Project Haru Backend
+
+할 일 관리 앱 백엔드
