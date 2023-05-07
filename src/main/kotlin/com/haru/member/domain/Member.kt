@@ -7,5 +7,5 @@ data class Member(
     val password: String,
 ) {
     
-    data class MemberId(val id: Long)
+    data class MemberId(val value: Long)
 }
