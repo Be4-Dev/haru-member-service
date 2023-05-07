@@ -59,7 +59,7 @@ class RegisterMemberServiceTest {
         
         `given nickname will exist`(member)
         
-        // Then
+        // When, Then
         assertFailsWith<Exception> { registerMemberService.register(command) }
     }
     
@@ -71,7 +71,7 @@ class RegisterMemberServiceTest {
         
         `given email will exist`(member)
         
-        // Then
+        // When, Then
         assertFailsWith<Exception> { registerMemberService.register(command) }
     }
     
