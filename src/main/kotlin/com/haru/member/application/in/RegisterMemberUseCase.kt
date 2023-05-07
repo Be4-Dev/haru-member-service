@@ -3,6 +3,7 @@ package com.haru.member.application.`in`
 import com.haru.member.domain.Member
 
 interface RegisterMemberUseCase {
+    
     fun register(command: Command): Result
     
     data class Command(
@@ -22,4 +23,5 @@ interface RegisterMemberUseCase {
             email       = member.email
         )
     }
+    
 }

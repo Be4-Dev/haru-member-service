@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class RegisterMemberService(
     private val writeMemberPort: WriteMemberPort,
     private val readMemberPort: ReadMemberPort,
-): RegisterMemberUseCase {
+) : RegisterMemberUseCase {
     @Transactional
     override fun register(command: RegisterMemberUseCase.Command): RegisterMemberUseCase.Result {
         if (readMemberPort.existsByNickname(command.nickname))  throw Exception("닉네임이 이미 존재합니다.")
