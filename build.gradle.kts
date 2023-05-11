@@ -1,18 +1,19 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
-val kotlinVersion = "1.7.22"
-
 plugins {
-	id("org.springframework.boot") version "3.0.6"
-	id("io.spring.dependency-management") version "1.1.0"
-	kotlin("jvm") version "1.7.22"
-	kotlin("plugin.spring") version "1.7.22"
-	kotlin("plugin.jpa") version "1.7.22"
+	id("org.springframework.boot")
+	id("io.spring.dependency-management")
+	kotlin("jvm")
+	kotlin("plugin.spring")
+	kotlin("plugin.jpa")
 }
 
-group = "com.haru"
-version = "0.0.1-SNAPSHOT"
+/** gradle.properties 파일에서 버전 정보를 가져옵니다. */
+val projectGroup: String by project
+val projectVersion: String by project
+
+group = projectGroup
+version = projectVersion
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -20,6 +21,9 @@ repositories {
 }
 
 dependencies {
+	/** gradle.properties 파일에서 버전 정보를 가져옵니다. */
+	val kotlinVersion: String by project
+
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-graphql")
 	implementation("org.springframework.boot:spring-boot-starter-web")
