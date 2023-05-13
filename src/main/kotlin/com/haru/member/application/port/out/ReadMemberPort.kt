@@ -1,4 +1,4 @@
-package com.haru.member.application.out
+package com.haru.member.application.port.out
 
 interface ReadMemberPort {
     

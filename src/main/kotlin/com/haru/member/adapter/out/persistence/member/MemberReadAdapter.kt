@@ -1,6 +1,6 @@
 package com.haru.member.adapter.out.persistence.member
 
-import com.haru.member.application.out.ReadMemberPort
+import com.haru.member.application.port.out.ReadMemberPort
 import org.springframework.stereotype.Component
 
 @Component
