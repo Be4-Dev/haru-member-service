@@ -20,7 +20,7 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
         readMemberPort  = readMemberPort
     )
     
-    Given("새로운 회원 정보가 주어진 상황에서") {
+    Given("새로운 회원 정보가 주어졌을 때") {
         val member  = MemberDummy.create()
         val command = RegisterMemberUseCaseDummy.createCommand(member)
 
@@ -31,7 +31,7 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
         When("회원 가입 서비스를 호출하면") {
             val result = registerMemberService.register(command)
 
-            Then("회원 정보가 올바르게 저장돼야 한다.") {
+            Then("저장된 회원 정보가 반환된다.") {
                 result.email        shouldBe    command.email
                 result.nickname     shouldBe    command.nickname
             }
@@ -46,7 +46,7 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
         readMemberPort.mockEmailWillNotExists()
 
         When("회원 가입 서비스를 호출하면") {
-            Then("예외를 던져야 한다.") {
+            Then("예외를 던진다.") {
                 shouldThrow<Exception> { registerMemberService.register(command) }
             }
         }
@@ -60,7 +60,7 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
         readMemberPort.mockEmailWillExists()
 
         When("회원 가입 서비스를 호출하면") {
-            Then("예외를 던져야 한다.") {
+            Then("예외를 던진다.") {
                 shouldThrow<Exception> { registerMemberService.register(command) }
             }
         }
