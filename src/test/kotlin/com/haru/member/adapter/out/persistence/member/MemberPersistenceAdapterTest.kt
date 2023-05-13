@@ -1,44 +1,33 @@
 package com.haru.member.adapter.out.persistence.member
 
-import com.haru.member.domain.Member
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import com.haru.member.test.RepositoryTest
+import com.haru.member.adapter.out.persistence.config.JpaAuditingConfig
+import com.haru.member.domain.MemberDummy
+import com.haru.member.test.TestConstants
+import io.kotest.core.spec.style.ExpectSpec
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.springframework.context.annotation.Import
-import org.springframework.test.context.ActiveProfiles
 
-@DataJpaTest
-@Import(MemberPersistenceAdapter::class)
-@ActiveProfiles("local")
-class MemberPersistenceAdapterTest(
-    @Autowired private val adapterUnderTest:   MemberPersistenceAdapter,
-) {
+@RepositoryTest
+@Import(value = [MemberPersistenceAdapter::class, JpaAuditingConfig::class])
+internal class MemberPersistenceAdapterTest(
+    private val adapterUnderTest: MemberPersistenceAdapter,
+) : ExpectSpec({
 
-    @Test
-    fun `JPA 회원 등록 테스트`() {
-        // Given
-        val member      = givenMember()
-    
-        // When
-        val savedMember = adapterUnderTest.saveNew(member)
-    
-        // Then
-        assertAll(
-            "JPA로 저장 후 반환 받은 회원 정보의 모든 속성을 검사합니다.",
-            { assertNotNull(savedMember.id) },
-            { assertEquals(member.nickname, savedMember.nickname) },
-            { assertEquals(member.email,    savedMember.email) },
-            { assertEquals(member.password, savedMember.password) },
-        )
+    context("회원 Command") { //@formatter:off
+        val member = MemberDummy.create()
+
+        val (savedMember, audit) = adapterUnderTest.saveNew(member, TestConstants.createdBy)
+
+        expect("새 회원 정보가 저장됩니다.") {
+            savedMember.id          shouldNotBe     null
+            savedMember.email       shouldBe        member.email
+            savedMember.nickname    shouldBe        member.nickname
+            savedMember.password    shouldBe        member.password
+            audit.createdAt         shouldNotBe     null
+            audit.createdBy         shouldNotBe     null
+        }
     }
-    
-    /* Test Objects */
-    private fun givenMember(): Member {
-        val nickname    = "테스터"
-        val email       = "tester@gmail.com"
-        val password    = "1234"
-    
-        return Member(nickname = nickname, email = email, password = password)
-    }
-}
+
+})

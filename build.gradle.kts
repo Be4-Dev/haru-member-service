@@ -22,7 +22,9 @@ repositories {
 
 dependencies {
 	/** gradle.properties 파일에서 버전 정보를 가져옵니다. */
-	val kotlinVersion: String by project
+	val kotestVersion: String by project
+	val kotestSpringVersion : String by project
+	val mockkVersion: String by project
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-graphql")
@@ -38,9 +40,11 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework:spring-webflux")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
-	
-	testImplementation("org.jetbrains.kotlin:kotlin-test:$kotlinVersion")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:$kotlinVersion")
+
+	testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
+	testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
+	testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 tasks.withType<KotlinCompile> {
