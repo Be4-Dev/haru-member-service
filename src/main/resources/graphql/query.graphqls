@@ -1,3 +1,0 @@
-type Query {
-    member(id: ID): Member
-}

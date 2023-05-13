@@ -18,5 +18,7 @@ spring:
     graphiql:
       enabled: true
     schema:
+      locations: classpath:graphql/**/
+      file-extensions: .graphqls, .gqls
       printer:
         enable: true
