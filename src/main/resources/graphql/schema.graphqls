@@ -1,0 +1,15 @@
+type Member {
+    id: ID
+    nickname: String
+    email: String
+}
+
+type Mutation {
+    registerMember(command: RegisterMemberCommand): Member
+}
+
+input RegisterMemberCommand {
+    nickname: String
+    email: String
+    password: String
+}

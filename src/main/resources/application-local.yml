@@ -1,4 +1,4 @@
-pspring:
+spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:testdb
@@ -13,3 +13,10 @@ pspring:
       ddl-auto: create-drop
     show-sql: true
     generate-ddl: true
+
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      printer:
+        enable: true
