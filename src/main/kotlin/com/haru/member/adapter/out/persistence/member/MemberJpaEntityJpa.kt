@@ -1,13 +1,14 @@
 package com.haru.member.adapter.out.persistence.member
 
-import com.haru.member.adapter.out.persistence.BaseEntity
-import com.haru.member.application.port.out.dto.EntityAudit
+import com.haru.member.adapter.out.persistence.JpaBaseEntity
 import com.haru.member.domain.Member
 import jakarta.persistence.*
 
+//@formatter:off
+
 @Entity
 @Table(name = "member")
-class MemberJpaEntity( //@formatter:off
+class MemberJpaEntityJpa(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id          : Long?,
@@ -15,28 +16,28 @@ class MemberJpaEntity( //@formatter:off
     val email       : String,
     val password    : String,
     createdBy       : String,
-    updatedBy       : String? = null,
-) : BaseEntity(createdBy = createdBy, updatedBy = updatedBy) {
+) : JpaBaseEntity(createdBy = createdBy) {
 
-    fun toMemberAudit(): EntityAudit<Member> {
+    fun toMember(): Member {
         val member = Member(
             id          = id?.let { Member.MemberId(it) },
             nickname    = nickname,
             email       = email,
             password    = password,
+            createdBy   = createdBy,
         )
 
-        return getEntityAudit(member)
+        return setAudit(member)
     }
     
     companion object {
-        fun from(member: Member, createdBy: String): MemberJpaEntity {
-            return MemberJpaEntity(
+        fun from(member: Member): MemberJpaEntityJpa {
+            return MemberJpaEntityJpa(
                 id          = member.id?.value,
                 nickname    = member.nickname,
                 email       = member.email,
                 password    = member.password,
-                createdBy   = createdBy,
+                createdBy   = member.createdBy,
             )
         }
     }

@@ -1,10 +1,11 @@
 package com.haru.member.application.port.`in`
 
-import com.haru.member.application.port.out.dto.EntityAudit
 import com.haru.member.domain.Member
 import java.time.LocalDateTime
 
-interface RegisterMemberUseCase { //@formatter:off
+//@formatter:off
+
+interface RegisterMemberUseCase {
     
     fun register(command: Command): Result
     
@@ -19,24 +20,22 @@ interface RegisterMemberUseCase { //@formatter:off
         val id          : Long?,
         val nickname    : String,
         val email       : String,
-        val createdAt   : LocalDateTime,
+        val createdAt   : LocalDateTime?,
         val createdBy   : String,
         val updatedAt   : LocalDateTime?,
         val updatedBy   : String?,
     )
     
     companion object {
-        fun from(entityAudit: EntityAudit<Member>): Result {
-            val (member, audit) = entityAudit
-
+        fun from(member: Member): Result {
             return Result(
                 id          = member.id?.value,
                 nickname    = member.nickname,
                 email       = member.email,
-                createdAt   = audit.createdAt,
-                createdBy   = audit.createdBy,
-                updatedAt   = audit.updatedAt,
-                updatedBy   = audit.updatedBy,
+                createdAt   = member.createdAt,
+                createdBy   = member.createdBy,
+                updatedAt   = member.updatedAt,
+                updatedBy   = member.updatedBy,
             )
         }
     }
