@@ -4,10 +4,12 @@ import com.haru.member.test.TestConstants
 
 //@formatter:off
 
-fun createUpdateProfileCommand(): UpdateProfileUseCase.Command {
+fun createUpdateProfileCommand(
+    nickname: String? = null,
+): UpdateProfileUseCase.Command {
     return UpdateProfileUseCase.Command(
         memberId    = 1L,
-        nickname    = "변경된닉네임",
+        nickname    = nickname,
         updatedBy   = TestConstants.updatedBy,
     )
 }

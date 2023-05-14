@@ -1,7 +1,7 @@
 package com.haru.member.adapter.out.persistence.member
 
 import com.haru.member.adapter.out.persistence.config.JpaAuditingConfig
-import com.haru.member.domain.MemberDummy
+import com.haru.member.domain.createMember
 import com.haru.member.test.RepositoryTest
 import com.haru.member.test.TestConstants
 import io.kotest.core.spec.style.BehaviorSpec
@@ -17,10 +17,9 @@ internal class MemberReadAdapterTest(
 ) : BehaviorSpec({
 
     Given("1건의 회원 레코드가 주어졌을 때") {
-        val member      = MemberDummy.create()
-        val createdBy   = TestConstants.createdBy
+        val member      = createMember(createdBy = TestConstants.createdBy)
 
-        memberPersistenceAdapter.saveNew(member, createdBy)
+        memberPersistenceAdapter.saveNew(member)
 
         When("일치하는 닉네임이 있으면") {
             val isExist = adapterUnderTest.existsByNickname(member.nickname)

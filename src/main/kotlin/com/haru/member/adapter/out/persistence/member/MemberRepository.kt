@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository
 //@formatter:off
 
 @Repository
-interface MemberRepository : JpaRepository<MemberJpaEntityJpa, Long> {
+interface MemberRepository : JpaRepository<MemberJpaEntity, Long> {
     
     fun existsByNickname(nickname: String)  : Boolean
     

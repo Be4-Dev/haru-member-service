@@ -7,6 +7,7 @@ import com.haru.member.test.ServiceTest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.mockk.mockk
 
 @ServiceTest
@@ -21,12 +22,12 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
     )
     
     Given("새로운 회원 정보가 주어졌을 때") {
-        val member  = createMember()
-        val command = createRegisterMemberCommand(member)
+        val memberDummy  = createMember()
+        val command = createRegisterMemberCommand(memberDummy)
 
         readMemberPort.mockNicknameWillNotExists()
         readMemberPort.mockEmailWillNotExists()
-        writeMemberPort.mockSaveNewWillSuccess(member)
+        writeMemberPort.mockSaveNewWillSuccess(memberDummy)
 
         When("회원 가입 서비스를 호출하면") {
             val result = registerMemberService.register(command)
@@ -34,13 +35,15 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
             Then("저장된 회원 정보가 반환된다.") {
                 result.email        shouldBe    command.email
                 result.nickname     shouldBe    command.nickname
+                result.createdAt    shouldNotBe null
+                result.createdBy    shouldBe    command.createdBy
             }
         }
     }
 
     Given("중복된 닉네임이 존재할 경우") {
-        val member  = createMember()
-        val command = createRegisterMemberCommand(member)
+        val memberDummy  = createMember()
+        val command = createRegisterMemberCommand(memberDummy)
 
         readMemberPort.mockNicknameWillExists()
         readMemberPort.mockEmailWillNotExists()
@@ -53,8 +56,8 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
     }
 
     Given("중복된 이메일이 존재할 경우") {
-        val member  = createMember()
-        val command = createRegisterMemberCommand(member)
+        val memberDummy  = createMember()
+        val command = createRegisterMemberCommand(memberDummy)
 
         readMemberPort.mockNicknameWillNotExists()
         readMemberPort.mockEmailWillExists()

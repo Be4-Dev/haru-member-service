@@ -2,6 +2,7 @@ package com.haru.member.application.port.out
 
 import com.haru.member.domain.Member
 import io.mockk.every
+import java.time.LocalDateTime
 
 //@formatter:off
 
@@ -19,6 +20,7 @@ fun WriteMemberPort.mockUpdateWillSuccess(
     updatedBy   : String,
 ) {
     member.updateProfile(nickname = nickname)
+    member.updatedAt = LocalDateTime.now()
     member.updatedBy = updatedBy
 
     every { update(any()) } answers { member }

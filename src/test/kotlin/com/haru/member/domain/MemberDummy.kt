@@ -1,6 +1,7 @@
 package com.haru.member.domain
 
 import com.haru.member.test.TestConstants
+import java.time.LocalDateTime
 
 //@formatter:off
 fun createMember(
@@ -18,6 +19,7 @@ fun createMember(
         password    = password,
         createdBy   = createdBy,
     )
+    member.createdAt = LocalDateTime.now()
     member.updatedBy = updatedBy
 
     return member

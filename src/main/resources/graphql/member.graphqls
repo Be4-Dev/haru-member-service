@@ -1,9 +1,10 @@
 type Query {
-    member(id: ID): Member
+    member(id: ID): MemberDTO
 }
 
 type Mutation {
-    registerMember(command: RegisterMemberCommand): Member
+    registerMember(command: RegisterMemberCommand): MemberDTO
+    updateMemberProfile(command: UpdateMemberProfileCommand): MemberDTO
 }
 
 input RegisterMemberCommand {
@@ -11,4 +12,10 @@ input RegisterMemberCommand {
     email       : String
     password    : String
     createdBy   : String
+}
+
+input UpdateMemberProfileCommand {
+    memberId    : Int
+    nickname    : String
+    updatedBy   : String
 }

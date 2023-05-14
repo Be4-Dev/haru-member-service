@@ -1,6 +1,7 @@
 package com.haru.member.application.service
 
 import com.haru.member.application.port.`in`.RegisterMemberUseCase
+import com.haru.member.application.port.`in`.dto.MemberDTO
 import com.haru.member.application.port.out.ReadMemberPort
 import com.haru.member.application.port.out.WriteMemberPort
 import com.haru.member.domain.Member
@@ -16,7 +17,7 @@ class RegisterMemberService(
 ) : RegisterMemberUseCase {
 
     @Transactional
-    override fun register(command: RegisterMemberUseCase.Command): RegisterMemberUseCase.Result {
+    override fun register(command: RegisterMemberUseCase.Command): MemberDTO {
         if (readMemberPort.existsByNickname(command.nickname))  throw Exception("닉네임이 이미 존재합니다.")
         if (readMemberPort.existsByEmail(command.email))        throw Exception("이메일이 이미 존재합니다.")
 
@@ -29,7 +30,7 @@ class RegisterMemberService(
 
         val savedMember = writeMemberPort.saveNew(member)
 
-        return RegisterMemberUseCase.from(savedMember)
+        return MemberDTO.from(savedMember)
     }
 
 }

@@ -1,6 +1,7 @@
 package com.haru.member.application.service
 
 import com.haru.member.application.port.`in`.UpdateProfileUseCase
+import com.haru.member.application.port.`in`.dto.MemberDTO
 import com.haru.member.application.port.out.ReadMemberPort
 import com.haru.member.application.port.out.WriteMemberPort
 import org.springframework.stereotype.Service
@@ -16,13 +17,14 @@ class UpdateProfileService(
 ) : UpdateProfileUseCase {
 
     @Transactional
-    override fun updateProfile(command: UpdateProfileUseCase.Command): UpdateProfileUseCase.Result {
-        val member          = readMemberPort.findById(command.memberId)
+    override fun updateProfile(command: UpdateProfileUseCase.Command): MemberDTO {
+        val member = readMemberPort.findById(command.memberId)
         member.updateProfile(command.nickname)
+        member.updatedBy = command.updatedBy
 
-        val updatedMember   = writeMemberPort.update(member)
+        val updatedMember = writeMemberPort.update(member)
 
-        return UpdateProfileUseCase.Result.from(updatedMember)
+        return MemberDTO.from(updatedMember)
     }
 
 }

@@ -16,32 +16,45 @@ import java.time.LocalDateTime
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class JpaBaseEntity(
-    @Column(updatable = false)
-    @Comment("생성자")
-    val createdBy: String,
+    createdBy: String,
 ) : Serializable {
 
-    @Column(updatable = false)
+    @Column(nullable = false, updatable = false)
+    @Comment("생성자")
+    var createdBy: String = createdBy
+        private set
+
+    @Column(nullable = false, updatable = false)
     @Comment("생성일")
     @CreatedDate
-    lateinit var createdAt: LocalDateTime
+    var createdAt: LocalDateTime = LocalDateTime.MIN
+        private set
 
     @Column(insertable = false)
     @Comment("수정일")
     @LastModifiedDate
     var updatedAt: LocalDateTime? = null
+        private set
 
     @Column(insertable = false)
     @Comment("수정자")
-    var updatedBy: String? = null
+    var updatedBy: String = createdBy
+        private set
 
-    protected fun <T : BaseEntity> setAudit(entity: T): T {
+    protected fun <T : BaseEntity> setAuditTo(entity: T): T {
         entity.createdAt = createdAt
         entity.createdBy = createdBy
         entity.updatedAt = updatedAt
         entity.updatedBy = updatedBy
 
         return entity
+    }
+
+    protected fun <T : BaseEntity> extractAuditFrom(entity: T) {
+        createdAt = entity.createdAt ?: createdAt
+        createdBy = entity.createdBy
+        updatedAt = entity.updatedAt
+        updatedBy = entity.updatedBy ?: updatedBy
     }
 
 }

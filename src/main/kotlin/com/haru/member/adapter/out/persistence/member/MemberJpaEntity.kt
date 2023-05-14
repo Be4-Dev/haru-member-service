@@ -8,7 +8,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "member")
-class MemberJpaEntityJpa(
+class MemberJpaEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id          : Long?,
@@ -27,18 +27,21 @@ class MemberJpaEntityJpa(
             createdBy   = createdBy,
         )
 
-        return setAudit(member)
+        return setAuditTo(member)
     }
     
     companion object {
-        fun from(member: Member): MemberJpaEntityJpa {
-            return MemberJpaEntityJpa(
+        fun from(member: Member): MemberJpaEntity {
+            val jpaMember = MemberJpaEntity(
                 id          = member.id?.value,
                 nickname    = member.nickname,
                 email       = member.email,
                 password    = member.password,
                 createdBy   = member.createdBy,
             )
+            jpaMember.extractAuditFrom(member)
+
+            return jpaMember
         }
     }
     
