@@ -41,8 +41,8 @@ dependencies {
 	testImplementation("org.springframework:spring-webflux")
 	testImplementation("org.springframework.graphql:spring-graphql-test")
 
-	testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
-	testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
+	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
 	testImplementation("io.mockk:mockk:$mockkVersion")
 }
