@@ -1,6 +1,12 @@
 package com.haru.member.application.port.out
 
+import com.haru.member.domain.Member
 import io.mockk.every
+
+/* findById() */
+fun ReadMemberPort.mockFindByIdWillSuccess(member: Member) {
+    every { findById(any()) } answers { member }
+}
 
 /* existsByNickname() */
 fun ReadMemberPort.mockNicknameWillNotExists() {

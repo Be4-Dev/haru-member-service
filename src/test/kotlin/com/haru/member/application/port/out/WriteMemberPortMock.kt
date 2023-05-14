@@ -1,21 +1,25 @@
 package com.haru.member.application.port.out
 
-import com.haru.member.application.port.out.dto.Audit
-import com.haru.member.application.port.out.dto.EntityAudit
 import com.haru.member.domain.Member
-import com.haru.member.test.TestConstants
 import io.mockk.every
-import java.time.LocalDateTime
 
 //@formatter:off
 
 /* saveNew() */
 fun WriteMemberPort.mockSaveNewWillSuccess(
-    member      : Member,
-    createdBy   : String = TestConstants.createdBy,
+    member : Member,
 ) {
-    val audit       = Audit(createdAt = LocalDateTime.now(), createdBy = createdBy)
-    val entityAudit = EntityAudit(entity = member, audit = audit)
+    every { saveNew(any()) } answers { member }
+}
 
-    every { saveNew(any(), any()) } answers { entityAudit }
+/* update() */
+fun WriteMemberPort.mockUpdateWillSuccess(
+    member      : Member,
+    nickname    : String?,
+    updatedBy   : String,
+) {
+    member.updateProfile(nickname = nickname)
+    member.updatedBy = updatedBy
+
+    every { update(any()) } answers { member }
 }

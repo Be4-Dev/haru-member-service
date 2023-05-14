@@ -3,7 +3,8 @@ package com.haru.member.test
 class TestConstants {
 
     companion object {
-        const val createdBy = "Tester"
+        const val createdBy = "Creator"
+        const val updatedBy = "Updater"
     }
 
 }

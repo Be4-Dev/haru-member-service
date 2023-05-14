@@ -1,8 +1,8 @@
 package com.haru.member.application.service
 
-import com.haru.member.application.port.`in`.RegisterMemberUseCaseDummy
+import com.haru.member.application.port.`in`.createRegisterMemberCommand
 import com.haru.member.application.port.out.*
-import com.haru.member.domain.MemberDummy
+import com.haru.member.domain.createMember
 import com.haru.member.test.ServiceTest
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
@@ -21,8 +21,8 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
     )
     
     Given("새로운 회원 정보가 주어졌을 때") {
-        val member  = MemberDummy.create()
-        val command = RegisterMemberUseCaseDummy.createCommand(member)
+        val member  = createMember()
+        val command = createRegisterMemberCommand(member)
 
         readMemberPort.mockNicknameWillNotExists()
         readMemberPort.mockEmailWillNotExists()
@@ -39,8 +39,8 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
     }
 
     Given("중복된 닉네임이 존재할 경우") {
-        val member  = MemberDummy.create()
-        val command = RegisterMemberUseCaseDummy.createCommand(member)
+        val member  = createMember()
+        val command = createRegisterMemberCommand(member)
 
         readMemberPort.mockNicknameWillExists()
         readMemberPort.mockEmailWillNotExists()
@@ -53,8 +53,8 @@ internal class RegisterMemberServiceTest : BehaviorSpec({ //@formatter:off
     }
 
     Given("중복된 이메일이 존재할 경우") {
-        val member  = MemberDummy.create()
-        val command = RegisterMemberUseCaseDummy.createCommand(member)
+        val member  = createMember()
+        val command = createRegisterMemberCommand(member)
 
         readMemberPort.mockNicknameWillNotExists()
         readMemberPort.mockEmailWillExists()
