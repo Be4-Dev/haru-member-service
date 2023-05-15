@@ -1,5 +1,7 @@
 package com.haru.member.application.service
 
+import com.haru.member.application.exception.EmailDuplicatedException
+import com.haru.member.application.exception.NicknameDuplicatedException
 import com.haru.member.application.port.`in`.RegisterMemberUseCase
 import com.haru.member.application.port.`in`.dto.MemberDTO
 import com.haru.member.application.port.out.ReadMemberPort
@@ -18,8 +20,8 @@ class RegisterMemberService(
 
     @Transactional
     override fun register(command: RegisterMemberUseCase.Command): MemberDTO {
-        if (readMemberPort.existsByNickname(command.nickname))  throw Exception("닉네임이 이미 존재합니다.")
-        if (readMemberPort.existsByEmail(command.email))        throw Exception("이메일이 이미 존재합니다.")
+        if (readMemberPort.existsByNickname(command.nickname))  throw NicknameDuplicatedException(command.nickname)
+        if (readMemberPort.existsByEmail(command.email))        throw EmailDuplicatedException(command.email)
 
         val member = Member(
             nickname    = command.nickname,
