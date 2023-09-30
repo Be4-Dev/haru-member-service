@@ -11,3 +11,7 @@ spring:
       hibernate:
         format_sql: true # SQL 예쁘게 출력
         default_batch_fetch_size: 1000 # 일대다 컬렉션 조회 시 성능 최적화
+
+cors:
+  allowed-origins:
+      - "http://localhost:3000"
