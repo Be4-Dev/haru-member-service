@@ -1,9 +1,0 @@
-type MemberDTO {
-    id          : ID
-    nickname    : String
-    email       : String
-    createdAt   : String
-    createdBy   : String
-    updatedAt   : String
-    updatedBy   : String
-}
