@@ -1,48 +1,43 @@
 package com.haru.member.global.exception
 
+import com.haru.member.global.exception.code.CommonErrorCode
 import org.slf4j.LoggerFactory
-import org.springframework.context.MessageSource
-import org.springframework.context.i18n.LocaleContextHolder
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
 @RestControllerAdvice
-class GlobalExceptionHandler(
-    private val messageSource: MessageSource,
-) {
+class GlobalExceptionHandler {
+
+    companion object {
+        private const val ERROR_LOG_FORMAT = "{} : {}"
+    }
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    // binding error가 발생할 경우
+    /* 비즈니스 로직 상에서 발생한 커스텀 예외 처리 */
     @ExceptionHandler(BusinessException::class)
     protected fun handleBindException(e: BusinessException): ResponseEntity<ErrorResponseDTO> {
-        log.error(ERROR_LOG_MESSAGE, e.javaClass.simpleName, e.message, e)
+        log.error(ERROR_LOG_FORMAT, e.javaClass.simpleName, e.message, e)
 
         val errorResponseDTO = ErrorResponseDTO(e.errorCode.code, e.message)
 
-        return ResponseEntity.status(e.errorCode.httpStatus)
+        return ResponseEntity
+            .status(e.errorCode.httpStatus)
             .body(errorResponseDTO)
     }
 
-    // 나머지 예외 발생
+    /* 기타 예외 처리 */
     @ExceptionHandler(Exception::class)
     protected fun handleException(e: Exception): ResponseEntity<ErrorResponseDTO> {
+        val errorCode = CommonErrorCode.INTERNAL_SERVER_ERROR
+        val response = ErrorResponseDTO(
+            errorCode.code,
+            "서버 동작 중 알 수 없는 예외가 발생했습니다.",
+        )
 
-        val message = messageSource.getMessage("internal.server.error", null, LocaleContextHolder.getLocale())
-        log.error(ERROR_LOG_MESSAGE, e.javaClass.simpleName, message, e)
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(
-                ErrorResponseDTO(
-                    "ERR-999",
-                    message,
-                )
-            )
-    }
-
-    companion object {
-        private const val ERROR_LOG_MESSAGE = "[ERROR] {} : {}"
+        return ResponseEntity
+            .status(errorCode.httpStatus)
+            .body(response)
     }
 }
